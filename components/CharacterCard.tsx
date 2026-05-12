@@ -1,27 +1,36 @@
+import Link from "next/link";
+import Image from "next/image";
+
 type CharacterCardProps = {
-    name: string;
-    element: string;
-    path: string;
-    rarity: string;
-    faction: string;
+	id: string;
+	name: string;
+	element: string;
+	path: string;
+	image: string;
 };
 
 export default function CharacterCard({
-    name,
-    element,
-    path,
-    rarity,
-    faction,
+	id,
+	name,
+	element,
+	path,
+    image,
 }: CharacterCardProps) {
-    return (
-        <div className="border p-4 rounded-lg">
-            <h2 className="text-xl font-semibold">
-                {name}
-            </h2>
-            <p>Rarity: {rarity}</p>
-            <p>Element: {element}</p>
-            <p>Path: {path}</p>
-            <p>Faction: {faction}</p>
-        </div>
-    );
+	return (
+		<Link href={`/characters/${id}`} className="block">
+			<div className="border rounded-xl overflow-hidden hover:scale-[1.02] transition cursor-pointer bg-white">
+				<div className="relative w-full h-64">
+					<Image src={image} alt={name} fill className="object-cover" />
+				</div>
+
+				<div className="p-4">
+					<h2 className="text-xl font-bold">{name}</h2>
+
+					<p className="text-sm text-gray-600">Element: {element}</p>
+
+					<p className="text-sm text-gray-600">Path: {path}</p>
+				</div>
+			</div>
+		</Link>
+	);
 }
