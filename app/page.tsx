@@ -4,23 +4,50 @@ import CharacterCard from "@/components/CharacterCard";
 import { Character } from "@/types/character";
 
 const elements = ["All", "Lightning", "Wind", "Ice"];
-const [characters, setCharacters] = useState<Character[]>([]);
 
 export default function Home() {
 	const [selectedElement, setSelectedElement] = useState("All");
 	const [search, setSearch] = useState("");
+	const [characters, setCharacters] = useState<Character[]>([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
 		async function fetchCharacters() {
-			const response = await fetch(
-				"/api/characters"
-			);
-			const data: Character[] = await response.json();
+			try {
+				setLoading(true);
 
-			setCharacters(data);
+				const response = await fetch(
+					"/api/characters"
+				);
+				const data = await response.json();
+				setCharacters(data);
+			} catch (error) {
+				setError("Failed to load characters");
+				console.error(error);
+			} finally {
+				setLoading(false);
+			}
 		}
+
 		fetchCharacters();
 	}, []);
+
+	if (error) {
+		return (
+			<div className="p-6 text-red-500">
+				{error}
+			</div>
+		);
+	}
+
+	if (loading) {
+		return (
+			<div className="p-6">
+				Loading characters...
+			</div>
+		);
+	}
 
 	return (
 		<main className="p-6">

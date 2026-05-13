@@ -1,4 +1,4 @@
-import { characters } from "@/lib/data";
+// import { characters } from "@/lib/data";
 import { Character } from "@/types/character";
 
 
