@@ -1,14 +1,26 @@
 "use client";
-
-import { useState } from "react";
-import { characters } from "@/lib/data";
+import { useEffect, useState } from "react";
 import CharacterCard from "@/components/CharacterCard";
+import { Character } from "@/types/character";
 
 const elements = ["All", "Lightning", "Wind", "Ice"];
+const [characters, setCharacters] = useState<Character[]>([]);
 
 export default function Home() {
 	const [selectedElement, setSelectedElement] = useState("All");
 	const [search, setSearch] = useState("");
+
+	useEffect(() => {
+		async function fetchCharacters() {
+			const response = await fetch(
+				"/api/characters"
+			);
+			const data: Character[] = await response.json();
+
+			setCharacters(data);
+		}
+		fetchCharacters();
+	}, []);
 
 	return (
 		<main className="p-6">
@@ -18,9 +30,8 @@ export default function Home() {
 					<button
 						key={element}
 						onClick={() => setSelectedElement(element)}
-						className={`border px-4 py-2 rounded ${
-							selectedElement === element ? "bg-blue-500 text-white" : ""
-						}`}
+						className={`border px-4 py-2 rounded ${selectedElement === element ? "bg-blue-500 text-white" : ""
+							}`}
 					>
 						{element}
 					</button>

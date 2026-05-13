@@ -1,4 +1,6 @@
-export const characters = [
+import { Character } from "@/types/character";
+
+export const characters: Character[] = [
 	{
 		id: "kafka",
 		name: "Kafka",

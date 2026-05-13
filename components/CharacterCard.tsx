@@ -1,20 +1,15 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Character } from "@/types/character";
 
-type CharacterCardProps = {
-	id: string;
-	name: string;
-	element: string;
-	path: string;
-	image: string;
-};
+type CharacterCardProps = Character;
 
 export default function CharacterCard({
 	id,
 	name,
 	element,
 	path,
-    image,
+	image,
 }: CharacterCardProps) {
 	return (
 		<Link href={`/characters/${id}`} className="block">
