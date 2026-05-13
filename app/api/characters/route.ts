@@ -1,8 +1,6 @@
-import { NextResponse } from "next/server";
-import { loadCharacters, getCharacters } from "@/lib/data";
+import { getCharacters } from "@/lib/data";
 
 export async function GET() {
-    await loadCharacters(); // IMPORTANT
-
-    return Response.json(getCharacters());
+    const characters = await getCharacters();
+    return Response.json(characters);
 }

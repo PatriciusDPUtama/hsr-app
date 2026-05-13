@@ -1,8 +1,6 @@
 import type { Character } from "@/types/character";
 
-let characters: Character[] = [];
-
-export async function loadCharacters() {
+export async function getCharacters(): Promise<Character[]> {
 	const [charRes, pathRes, elemRes] = await Promise.all([
 		fetch("https://raw.githubusercontent.com/Mar-7th/StarRailRes/master/index_new/en/characters.json"),
 		fetch("https://raw.githubusercontent.com/Mar-7th/StarRailRes/master/index_new/en/paths.json"),
@@ -13,7 +11,7 @@ export async function loadCharacters() {
 	const paths = await pathRes.json();
 	const elements = await elemRes.json();
 
-	characters = Object.values(charactersRaw).map((c: any): Character => ({
+	return Object.values(charactersRaw).map((c: any): Character => ({
 		id: c.id,
 		name: c.name,
 		rarity: c.rarity,
@@ -21,10 +19,12 @@ export async function loadCharacters() {
 		element: elements[c.element]?.name ?? c.element,
 		image: `https://raw.githubusercontent.com/Mar-7th/StarRailRes/master/${c.icon}`,
 	}));
-
-	return characters;
 }
 
-export function getCharacters(): Character[] {
-	return characters;
+export async function findCharacter(id: string): Promise<Character | undefined> {
+	const characters = await getCharacters();
+
+	return characters.find(
+		(char) => String(char.id) === String(id)
+	);
 }

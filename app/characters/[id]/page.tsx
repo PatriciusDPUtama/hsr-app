@@ -1,6 +1,4 @@
-// import { characters } from "@/lib/data";
-import { Character } from "@/types/character";
-
+import { getCharacters } from "@/lib/data";
 
 type CharacterPageProps = {
 	params: Promise<{
@@ -10,10 +8,12 @@ type CharacterPageProps = {
 
 export default async function CharacterPage({ params }: CharacterPageProps) {
 	const { id } = await params;
-	const character: Character | undefined =
-		characters.find(
-			(char) => char.id === id
-		);
+	const characters = await getCharacters();
+
+	const character = characters.find(
+		(char) => String(char.id) === String(id)
+	);
+
 	if (!character) {
 		return <div className="p-6">Character not found</div>;
 	}
