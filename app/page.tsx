@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import CharacterCard from "@/components/CharacterCard";
 import { Character } from "@/types/character";
+import { getCharacters } from "@/lib/api/characters";
 
 const elements = ["All", "Lightning", "Wind", "Ice"];
 
@@ -17,10 +18,7 @@ export default function Home() {
 			try {
 				setLoading(true);
 
-				const response = await fetch(
-					"/api/characters"
-				);
-				const data = await response.json();
+				const data = await getCharacters();
 				setCharacters(data);
 			} catch (error) {
 				setError("Failed to load characters");
