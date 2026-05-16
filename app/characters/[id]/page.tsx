@@ -1,4 +1,4 @@
-import { getCharacters } from "@/lib/data";
+import { getStarRailCharacters } from "@/lib/api/starrail";
 
 type CharacterPageProps = {
 	params: Promise<{
@@ -8,11 +8,10 @@ type CharacterPageProps = {
 
 export default async function CharacterPage({ params }: CharacterPageProps) {
 	const { id } = await params;
-	const characters = await getCharacters();
 
-	const character = characters.find(
-		(char) => String(char.id) === String(id)
-	);
+	const characters = await getStarRailCharacters();
+
+	const character = characters.find((char) => String(char.id) === String(id));
 
 	if (!character) {
 		return <div className="p-6">Character not found</div>;
@@ -21,8 +20,10 @@ export default async function CharacterPage({ params }: CharacterPageProps) {
 	return (
 		<main className="p-6">
 			<h1 className="text-3xl font-bold">{character.name}</h1>
-			<p className="mt-4">Element: {character.element}</p>
-			<p>Path: {character.path}</p>
+
+			<p className="mt-4">Element: {character.element.name}</p>
+
+			<p>Path: {character.path.name}</p>
 		</main>
 	);
 }

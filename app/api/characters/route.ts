@@ -1,6 +1,17 @@
-import { getCharacters } from "@/lib/data";
+import { NextResponse } from "next/server";
+import { getStarRailCharacters } from "@/lib/api/starrail";
 
 export async function GET() {
-    const characters = await getCharacters();
-    return Response.json(characters);
+	try {
+		const characters = await getStarRailCharacters();
+
+		return NextResponse.json(characters);
+	} catch (error) {
+		return NextResponse.json(
+			{
+				error: "Failed to fetch characters",
+			},
+			{ status: 500 },
+		);
+	}
 }
